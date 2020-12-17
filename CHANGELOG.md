@@ -1,3 +1,6 @@
+# 0.0.3 : 2020.12.17
+- including missing jar in maven central
+
 # 0.0.2 : 2020.12.17
 - added `suspend fun Later<T>.await():T`
 
