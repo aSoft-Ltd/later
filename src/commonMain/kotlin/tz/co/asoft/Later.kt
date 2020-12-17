@@ -9,6 +9,7 @@ expect class Later<T>(scope: CoroutineScope = LaterScope, deferred: Deferred<T>)
     internal val scope: CoroutineScope
 
     @JvmSynthetic
+    @PublishedApi
     internal val deferred: Deferred<T>
 
     fun wait(): T

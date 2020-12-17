@@ -18,3 +18,5 @@ fun <T> CoroutineScope.later(builder: suspend () -> T) = Later(
     scope = this,
     deferred = async { builder() }
 )
+
+suspend inline fun <T> Later<T>.await() = deferred.await()
