@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: tz.co.asoft:test-jvm:1.0.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../../.gradle/caches/modules-2/files-2.1/tz.co.asoft/test-jvm/1.0.1/8a9b09651da9b7d6023e9d5861a201e30c49f9f8/test-jvm-1.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../../.gradle/caches/modules-2/files-2.1/tz.co.asoft/test-jvm/1.0.1/6340d1f70cf6dd451e7c6cfa5a0229003a435983/test-jvm-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

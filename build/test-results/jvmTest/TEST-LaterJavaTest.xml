@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="LaterJavaTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-12-17T11:05:41" hostname="astroid" time="0.003">
+  <properties/>
+  <testcase name="should_hav_a_goo_api[jvm]" classname="LaterJavaTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

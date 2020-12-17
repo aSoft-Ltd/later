@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/later.iml" filepath="$PROJECT_DIR$/.idea/modules/later.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/later.buildSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/later.buildSrc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/later.commonMain.iml" filepath="$PROJECT_DIR$/.idea/modules/later.commonMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/later.commonTest.iml" filepath="$PROJECT_DIR$/.idea/modules/later.commonTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/later.jsMain.iml" filepath="$PROJECT_DIR$/.idea/modules/later.jsMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/later.jsTest.iml" filepath="$PROJECT_DIR$/.idea/modules/later.jsTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/later.jvmMain.iml" filepath="$PROJECT_DIR$/.idea/modules/later.jvmMain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/later.jvmTest.iml" filepath="$PROJECT_DIR$/.idea/modules/later.jvmTest.iml" />
+    </modules>
+  </component>
+</project>
