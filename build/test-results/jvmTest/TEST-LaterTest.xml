@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="LaterTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-12-17T11:05:41" hostname="astroid" time="0.001">
-  <properties/>
-  <testcase name="should_have_a_good_api[jvm]" classname="LaterTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
