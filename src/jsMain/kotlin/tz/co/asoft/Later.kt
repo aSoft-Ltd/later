@@ -5,7 +5,8 @@ import kotlin.js.Promise
 
 actual class Later<T> actual constructor(
     actual val scope: CoroutineScope,
-    actual val deferred: Deferred<T>
+    @PublishedApi
+    internal actual val deferred: Deferred<T>
 ) : Deferred<T> by deferred {
 
     companion object {
@@ -26,7 +27,8 @@ actual class Later<T> actual constructor(
      */
     actual fun wait(): T = deferred.getCompleted()
 
-    fun <S> catch(handler: (Throwable) -> S): Later<S> = from(scope = scope, asPromise().catch(handler))
+    fun <S> catch(handler: (Throwable) -> S): Later<S> =
+        from(scope = scope, asPromise().catch(handler))
 
     fun <S> then(completer: (T) -> S): Later<S> = map { completer(it) }
 

@@ -9,6 +9,7 @@ actual class Later<T> actual constructor(
     @JvmSynthetic
     internal actual val scope: CoroutineScope,
     @JvmSynthetic
+    @PublishedApi
     internal actual val deferred: Deferred<T>
 ) {
     companion object {
