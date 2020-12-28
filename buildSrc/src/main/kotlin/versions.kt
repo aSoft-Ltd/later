@@ -4,8 +4,8 @@ object vers {
     val nexus_staging = "0.22.0"
 
     object asoft {
-        val test = "1.0.1"
-        val builders = "1.1.1"
+        val test = "1.1.0"
+        val builders = "1.2.0"
         val later = "0.0.3"
     }
 

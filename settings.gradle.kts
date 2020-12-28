@@ -16,3 +16,5 @@ pluginManagement {
 }
 
 rootProject.name = "later"
+
+include(":later-core")
