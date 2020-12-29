@@ -23,17 +23,20 @@ kotlin {
         binaries.executable()
     }
     sourceSets {
-        val commonTest by getting {
+        val commonMain by getting {
             dependencies {
-                api(asoft("test-core", vers.asoft.test))
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
+                api(project(":later-core"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
             }
         }
+
+        val commonTest by getting {
+            dependencies {
+                api(asoft("test-coroutines", vers.asoft.test))
+            }
+        }
+
+        val jvmMain by getting {}
 
         val jvmTest by getting {
             dependsOn(commonTest)

@@ -24,7 +24,7 @@ class LaterTestJS {
 
     @Test
     fun should_have_a_good_api(): dynamic {
-        val later = Later<Int> { resolve, reject ->
+        val later = BaseLater<Int> { resolve, reject ->
             console.log("Started executing")
             setTimeout(
                 {
@@ -40,7 +40,7 @@ class LaterTestJS {
             0
         }.then {
             console.log("Recovered to $it")
-            Later.resolve(it + 1)
+            BaseLater.resolve(it + 1)
         }.later {
             console.log("Got $it")
             it
@@ -54,12 +54,12 @@ class LaterTestJS {
         return firstThen
     }
 
-    fun later(value: Int) = Later<Int> { resolve, reject ->
+    fun later(value: Int) = BaseLater<Int> { resolve, reject ->
         if (value < 5) reject(Exception("Number($value) is less than 5"))
         else resolve(value)
     }
 
-    fun Later<Int>.process() = error {
+    fun BaseLater<Int>.process() = error {
         console.log("Error: ${it.message}")
         5
     }.then {
@@ -87,7 +87,7 @@ class LaterTestJS {
     fun finally_test() = laterTest {
         later(4).error {
             console.log("Caught error: $it")
-        }.complete {
+        }.finally {
             console.log("I am certain that this is settled now")
             console.log(it)
         }

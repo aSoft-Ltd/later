@@ -18,3 +18,4 @@ pluginManagement {
 rootProject.name = "later"
 
 include(":later-core")
+include(":later-core-ktx")

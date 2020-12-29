@@ -8,10 +8,10 @@ expect fun loadToNextEventLoop(body: () -> Unit)
 @OptIn(ExperimentalContracts::class)
 fun isThenable(o: Any?): Boolean {
     contract {
-        returns(true) implies (o is Later<*>)
+        returns(true) implies (o is BaseLater<*>)
     }
     if (o == null) return false
-    if (o is Later<*>) return true
+    if (o is BaseLater<*>) return true
 //    if (js("typeof o.then === 'function'")) return true
     return false
 }

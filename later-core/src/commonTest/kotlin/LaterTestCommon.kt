@@ -2,12 +2,12 @@ import tz.co.asoft.*
 import kotlin.test.Test
 
 class LaterTestCommon {
-    fun later(value: Int) = Later<Int> { resolve, reject ->
+    fun later(value: Int) = BaseLater<Int> { resolve, reject ->
         if (value < 5) reject(Exception("Number($value) is less than 5"))
         else resolve(value)
     }
 
-    fun Later<Int>.process() = error {
+    fun BaseLater<Int>.process() = error {
         println("Error: ${it.message}")
         5
     }.then {

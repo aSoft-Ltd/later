@@ -1,6 +1,6 @@
 import org.junit.Test;
 
-import tz.co.asoft.Later;
+import tz.co.asoft.BaseLater;
 
 public class LaterJavaTest {
     private void sleep(int duration) {
@@ -11,8 +11,8 @@ public class LaterJavaTest {
         }
     }
 
-    private Later<Integer> later(Integer value) {
-        return new Later<>(((resolve, reject) -> {
+    private BaseLater<Integer> later(Integer value) {
+        return new BaseLater<>(((resolve, reject) -> {
             System.out.println("Sleeping");
             sleep(2000);
             System.out.println("finished sleeping");
