@@ -3,8 +3,10 @@ import kotlin.test.Test
 
 class LaterTestCommon {
     fun later(value: Int) = BaseLater<Int> { resolve, reject ->
-        if (value < 5) reject(Exception("Number($value) is less than 5"))
-        else resolve(value)
+        loadToNextEventLoop {
+            if (value < 5) reject(Exception("Number($value) is less than 5"))
+            else resolve(value)
+        }
     }
 
     fun BaseLater<Int>.process() = error {
@@ -32,7 +34,7 @@ class LaterTestCommon {
 //    }
 
     @Test
-    fun finally_test() = asyncTest{
+    fun finally_test() = asyncTest {
         later(4).error {
             println("Caught error: $it")
             5

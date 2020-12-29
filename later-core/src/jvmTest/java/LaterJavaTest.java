@@ -1,6 +1,5 @@
 import org.junit.Test;
 
-import tz.co.asoft.BaseLater;
 import tz.co.asoft.Later;
 
 public class LaterJavaTest {
@@ -36,6 +35,11 @@ public class LaterJavaTest {
             System.out.println("Finished with " + res);
             return null;
         });
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

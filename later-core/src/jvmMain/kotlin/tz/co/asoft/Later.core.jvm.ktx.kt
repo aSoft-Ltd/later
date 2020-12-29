@@ -4,6 +4,8 @@ import kotlinx.coroutines.*
 
 val LATER_DISPATCHER: ExecutorCoroutineDispatcher = newSingleThreadContext("tz.co.asoft.LATER_DISPATCHER")
 
+val LATER_SCOPE = CoroutineScope(SupervisorJob() + LATER_DISPATCHER)
+
 actual fun loadToNextEventLoop(body: () -> Unit) {
-    runBlocking(LATER_DISPATCHER) { body() }
+    LATER_SCOPE.launch { body() }
 }
