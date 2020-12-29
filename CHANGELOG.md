@@ -1,3 +1,10 @@
+# 0.0.40 : 2020.12.29
+- Rewrote everything
+- Created portable javascript thenables that can universally be used in any language
+- Provided bindings for java (functional interfaces and the wait method that blocks)
+- Provided javascript binding asPromise to easily use it in javascript
+- Provided a later-ktx that brings Later to the land of courutines
+
 # 0.0.3 : 2020.12.17
 - including missing jar in maven central
 

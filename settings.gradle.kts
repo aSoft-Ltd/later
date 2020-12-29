@@ -18,4 +18,6 @@ pluginManagement {
 rootProject.name = "later"
 
 include(":later-core")
-include(":later-core-ktx")
+include(":later-ktx")
+include(":later-test-expect")
+project(":later-test-expect").projectDir = File("later-test/later-test-expect")
