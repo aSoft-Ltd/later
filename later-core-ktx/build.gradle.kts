@@ -35,20 +35,6 @@ kotlin {
                 api(asoft("test-coroutines", vers.asoft.test))
             }
         }
-
-        val jvmMain by getting {}
-
-        val jvmTest by getting {
-            dependsOn(commonTest)
-            dependsOn(jvmMain)
-        }
-
-        val jsMain by getting {}
-
-        val jsTest by getting {
-            dependsOn(commonTest)
-            dependsOn(jsMain)
-        }
     }
 }
 
