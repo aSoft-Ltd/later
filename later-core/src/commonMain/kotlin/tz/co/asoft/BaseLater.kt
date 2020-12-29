@@ -1,6 +1,5 @@
 package tz.co.asoft
 
-import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
@@ -22,9 +21,9 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     init {
         loadToNextEventLoop {
             try {
-                executor?.invoke(::onFulfilled, ::onRejected)
+                executor?.invoke(::resolveWith, ::rejectWith)
             } catch (err: Throwable) {
-                onRejected(err)
+                rejectWith(err)
             }
         }
     }
@@ -61,7 +60,7 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
         if (s is State.Settled) {
             cleanUp(s)
             return when (s) {
-                is State.Settled.FULFILLED -> Later.resolve(s.value) as Later<T>
+                is State.Settled.FULFILLED -> Later.resolve(s.value as T)
                 is State.Settled.REJECTED -> Later.reject(s.cause) as Later<T>
             }
         }
@@ -84,14 +83,14 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     @JsName("finally")
     fun finally(cleanUp: (state: State.Settled) -> Any?) = cleanUp(cleanUp)
 
-    internal fun onFulfilled(value: Any?) {
+    fun <T> resolveWith(value: T) {
         if (state is State.PENDING) {
             state = State.Settled.FULFILLED(value)
             propagateFulfilled(value)
         }
     }
 
-    internal fun onRejected(error: Throwable) {
+    fun rejectWith(error: Throwable) {
         if (state == State.PENDING) {
             state = State.Settled.REJECTED(error)
             propagateRejected(error)
@@ -106,14 +105,14 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
                 val valueOrLater = fulfilledFn?.invoke(value) ?: throw RuntimeException("No fulfilled function provided")
                 if (isThenable(valueOrLater)) {
                     valueOrLater.then(
-                        onResolved = { v -> controlledLater.onFulfilled(v) },
-                        onRejected = { error -> controlledLater.onRejected(error) }
+                        onResolved = { v -> controlledLater.resolveWith(v) },
+                        onRejected = { error -> controlledLater.rejectWith(error) }
                     )
                 } else {
-                    controlledLater.onFulfilled(valueOrLater)
+                    controlledLater.resolveWith(valueOrLater)
                 }
             } catch (err: Throwable) {
-                controlledLater.onFulfilled(value)
+                controlledLater.resolveWith(value)
             }
         }
 
@@ -121,7 +120,7 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
             val controlledLater = it.controlledLater
             val fulfilledFn = it.fulfilledFn
             fulfilledFn?.invoke(value)
-            controlledLater.onFulfilled(value)
+            controlledLater.resolveWith(value)
         }
         thenQueue.clear()
         finallyQueue.clear()
@@ -135,14 +134,14 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
                 val valueOrLater = rejectedFn(error)
                 if (isThenable(valueOrLater)) {
                     valueOrLater.then(
-                        onResolved = { v -> controlledLater.onFulfilled(v) },
-                        onRejected = { err -> controlledLater.onRejected(err) }
+                        onResolved = { v -> controlledLater.resolveWith(v) },
+                        onRejected = { err -> controlledLater.rejectWith(err) }
                     )
                 } else {
-                    controlledLater.onFulfilled(valueOrLater)
+                    controlledLater.resolveWith(valueOrLater)
                 }
             } catch (err: Throwable) {
-                controlledLater.onRejected(err)
+                controlledLater.rejectWith(err)
             }
         }
 
@@ -150,7 +149,7 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
             val controlledLater = it.controlledLater
             val rejectedFn = it.rejectedFn
             rejectedFn?.invoke(error)
-            controlledLater.onRejected(error)
+            controlledLater.rejectWith(error)
         }
         thenQueue.clear()
         finallyQueue.clear()
