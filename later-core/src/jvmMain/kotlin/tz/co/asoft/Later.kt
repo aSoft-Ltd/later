@@ -40,7 +40,7 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
     fun complete(handler: Callback<State.Settled, Any?>) = complete { state -> handler.invoke(state) }
 
     /**
-     * Warning: This method blocks the [LATER_DISPATCHER] and just waits for the result
+     * Warning: This method blocks the [LATER_DISPATCHER_JVM] and just waits for the result
      * This causes other later methods (if any are available) to stop executing
      * until this [Later] settles
      *
