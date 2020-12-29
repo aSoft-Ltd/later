@@ -1,22 +1,16 @@
 package tz.co.asoft
 
+import kotlin.js.JsExport
 import kotlin.js.JsName
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
+@JsExport
 open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
     private var thenQueue: MutableList<LaterQueueComponent> = mutableListOf()
     private var finallyQueue: MutableList<LaterQueueComponent> = mutableListOf()
 
-    private var state: State = State.PENDING
-
-    sealed class State {
-        object PENDING : State()
-        sealed class Settled : State() {
-            data class FULFILLED(val value: Any?) : Settled()
-            data class REJECTED(val cause: Throwable) : Settled()
-        }
-    }
+    private var state: LaterState = LaterState.PENDING
 
     init {
         loadToNextEventLoop {
@@ -42,8 +36,8 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
         val controlledLater = Later<S>()
         thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> Any?, onRejected))
         when (val s = state) {
-            is State.Settled.FULFILLED -> propagateFulfilled(s.value)
-            is State.Settled.REJECTED -> propagateRejected(s.cause)
+            is LaterState.Settled.FULFILLED -> propagateFulfilled(s.value)
+            is LaterState.Settled.REJECTED -> propagateRejected(s.cause)
         }
         return controlledLater
     }
@@ -55,44 +49,44 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     @JsName("catch")
     fun <S> catch(handler: (Throwable) -> S) = error(handler)
 
-    protected fun cleanUp(cleanUp: (state: State.Settled) -> Any?): Later<T> {
+    protected fun cleanUp(cleanUp: (state: LaterState.Settled) -> Any?): Later<T> {
         val s = state
-        if (s is State.Settled) {
+        if (s is LaterState.Settled) {
             cleanUp(s)
             return when (s) {
-                is State.Settled.FULFILLED -> Later.resolve(s.value as T)
-                is State.Settled.REJECTED -> Later.reject(s.cause) as Later<T>
+                is LaterState.Settled.FULFILLED -> Later.resolve(s.value as T)
+                is LaterState.Settled.REJECTED -> Later.reject(s.cause) as Later<T>
             }
         }
 
         val controlledLater = Later<T>()
         val resolve = { value: Any? ->
-            cleanUp(State.Settled.FULFILLED(value))
+            cleanUp(LaterState.Settled.FULFILLED(value))
         }
         val rejected = { err: Throwable ->
-            cleanUp(State.Settled.REJECTED(err))
+            cleanUp(LaterState.Settled.REJECTED(err))
         }
         finallyQueue.add(LaterQueueComponent(controlledLater, resolve, rejected))
         return controlledLater
     }
 
     @JvmSynthetic
-    fun complete(cleanUp: (state: State.Settled) -> Any?) = cleanUp(cleanUp)
+    fun complete(cleanUp: (state: LaterState.Settled) -> Any?) = cleanUp(cleanUp)
 
     @JvmSynthetic
     @JsName("finally")
-    fun finally(cleanUp: (state: State.Settled) -> Any?) = cleanUp(cleanUp)
+    fun finally(cleanUp: (state: LaterState.Settled) -> Any?) = cleanUp(cleanUp)
 
     fun <T> resolveWith(value: T) {
-        if (state is State.PENDING) {
-            state = State.Settled.FULFILLED(value)
+        if (state is LaterState.PENDING) {
+            state = LaterState.Settled.FULFILLED(value)
             propagateFulfilled(value)
         }
     }
 
     fun rejectWith(error: Throwable) {
-        if (state == State.PENDING) {
-            state = State.Settled.REJECTED(error)
+        if (state == LaterState.PENDING) {
+            state = LaterState.Settled.REJECTED(error)
             propagateRejected(error)
         }
     }
@@ -154,4 +148,6 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
         thenQueue.clear()
         finallyQueue.clear()
     }
+
+    override fun toString() = "Later { <$state> }"
 }

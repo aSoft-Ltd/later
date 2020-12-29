@@ -16,7 +16,7 @@ fun <T, S> BaseLater<BaseLater<T>>.later(
 }
 
 fun <T> BaseLater<T>.asPromise(): Promise<T> = asDynamic().promise ?: Promise { resolve, reject ->
-    then(onResolved = { resolve(it) }, onRejected = { reject(it) })
+    then(onResolved = { Later.resolve(it) }, onRejected = { reject(it) })
 }
 
 fun <T> Promise<T>.asLater(): Later<T> = asDynamic().later ?: Later { resolve, reject ->
