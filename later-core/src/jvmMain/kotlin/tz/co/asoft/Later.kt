@@ -16,12 +16,12 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
         actual fun reject(error: Throwable) = Later<Nothing> { _, reject -> reject(error) }
     }
 
-    fun <S> then(onResolve: Callback<T, S>): BaseLater<S> = then(
+    fun <S> then(onResolve: Callback<T, S>): Later<S> = then(
         onResolved = { value -> onResolve.invoke(value) },
         onRejected = null
     )
 
-    fun <S> then(onResolve: Callback<T, S>, onReject: Callback<Throwable, S>): BaseLater<S> = then(
+    fun <S> then(onResolve: Callback<T, S>, onReject: Callback<Throwable, S>): Later<S> = then(
         onResolved = { value -> onResolve.invoke(value) },
         onRejected = { error -> onReject.invoke(error) }
     )
@@ -29,7 +29,7 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
     /**
      * Same as calling catch on javascript / kotlin
      */
-    fun <S> error(handler: Callback<Throwable, S>): BaseLater<S> = then(
+    fun <S> error(handler: Callback<Throwable, S>): Later<S> = then(
         onResolved = null,
         onRejected = { err -> handler.invoke(err) }
     )

@@ -67,7 +67,7 @@ class LaterTestJS {
     }.then { }
 
     @Test
-    fun should_return_basic_values() = laterTest {
+    fun should_return_basic_values() = asyncTest {
         val later1 = later(6)
 
         val then1 = later1.process()
@@ -77,14 +77,14 @@ class LaterTestJS {
         later2.process()
     }
 
-    @Test
-    fun testing_awaiting() = asyncTest {
-        val res = later(6).await()
-        console.log("Awaited value was $res")
-    }
+//    @Test
+//    fun testing_awaiting() = asyncTest {
+//        val res = later(6).await()
+//        console.log("Awaited value was $res")
+//    }
 
     @Test
-    fun finally_test() = laterTest {
+    fun finally_test() = asyncTest {
         later(4).error {
             console.log("Caught error: $it")
         }.finally {

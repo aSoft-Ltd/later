@@ -1,6 +1,7 @@
 import org.junit.Test;
 
 import tz.co.asoft.BaseLater;
+import tz.co.asoft.Later;
 
 public class LaterJavaTest {
     private void sleep(int duration) {
@@ -11,14 +12,14 @@ public class LaterJavaTest {
         }
     }
 
-    private BaseLater<Integer> later(Integer value) {
-        return new BaseLater<>(((resolve, reject) -> {
+    private Later<Integer> later(Integer value) {
+        return new Later<>((resolve, reject) -> {
             System.out.println("Sleeping");
             sleep(2000);
             System.out.println("finished sleeping");
             if (value < 5) reject.invoke(new Exception("Number (" + value + ") is less than 5"));
             resolve.invoke(value);
-        }));
+        });
     }
 
     @Test

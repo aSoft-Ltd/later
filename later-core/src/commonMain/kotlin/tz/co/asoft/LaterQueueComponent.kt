@@ -1,7 +1,7 @@
 package tz.co.asoft
 
 internal class LaterQueueComponent(
-    var controlledLater: BaseLater<*>,
+    var controlledLater: Later<*>,
     var fulfilledFn: ((Any?) -> Any?)?,
     val rejectedFn: ((Throwable) -> Any?)?
 )

@@ -39,8 +39,8 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
 
     @JsName("then")
     @JvmSynthetic
-    fun <S> then(onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)?): BaseLater<S> {
-        val controlledLater = BaseLater<S>()
+    fun <S> then(onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)?): Later<S> {
+        val controlledLater = Later<S>()
         thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> Any?, onRejected))
         when (val s = state) {
             is State.Settled.FULFILLED -> propagateFulfilled(s.value)
@@ -84,14 +84,14 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     @JsName("finally")
     fun finally(cleanUp: (state: State.Settled) -> Any?) = cleanUp(cleanUp)
 
-    private fun onFulfilled(value: Any?) {
+    internal fun onFulfilled(value: Any?) {
         if (state is State.PENDING) {
             state = State.Settled.FULFILLED(value)
             propagateFulfilled(value)
         }
     }
 
-    private fun onRejected(error: Throwable) {
+    internal fun onRejected(error: Throwable) {
         if (state == State.PENDING) {
             state = State.Settled.REJECTED(error)
             propagateRejected(error)
