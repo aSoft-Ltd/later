@@ -2,6 +2,7 @@ package tz.co.asoft
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.concurrent.CompletableFuture
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -53,5 +54,14 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
                 onRejected = { err -> cont.resumeWithException(err) }
             )
         }
+    }
+
+    fun asCompletableFuture(): CompletableFuture<T> {
+        val future = CompletableFuture<T>()
+        then(
+            onResolved = { future.complete(it) },
+            onRejected = { future.completeExceptionally(it) }
+        )
+        return future
     }
 }
