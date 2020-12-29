@@ -9,6 +9,7 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
         actual fun reject(error: Throwable) = Later<Nothing> { _, reject -> reject(error) }
     }
 
+    @JsName("asPromise")
     fun asPromise(): Promise<T> = asDynamic().promise ?: Promise { resolve, reject ->
         then(onResolved = { resolve(it) }, onRejected = { reject(it) })
     }

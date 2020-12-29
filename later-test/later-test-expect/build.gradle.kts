@@ -25,13 +25,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":later-core"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
-            }
-        }
-
-        val commonTest by getting {
-            dependencies {
+                api(project(":later-ktx"))
                 api(asoft("test-coroutines", vers.asoft.test))
                 api(asoft("expect-core",vers.asoft.expect))
             }
@@ -41,5 +35,5 @@ kotlin {
 
 aSoftOSSLibrary(
     version = vers.asoft.later,
-    description = "An multiplatform representation of a Promised based api"
+    description = "A set of predifined expect assertions to easily test Later(s)"
 )
