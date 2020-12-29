@@ -3,6 +3,7 @@ package tz.co.asoft
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.concurrent.CompletableFuture
+import java.util.function.Function
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -17,28 +18,28 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
         actual fun reject(error: Throwable) = Later<Nothing> { _, reject -> reject(error) }
     }
 
-    fun <S> then(onResolve: Callback<T, S>): Later<S> = then(
-        onResolved = { value -> onResolve.invoke(value) },
+    fun <S> then(onResolve: Function<T, S>): Later<S> = then(
+        onResolved = { value -> onResolve.apply(value) },
         onRejected = null
     )
 
-    fun <S> then(onResolve: Callback<T, S>, onReject: Callback<Throwable, S>): Later<S> = then(
-        onResolved = { value -> onResolve.invoke(value) },
-        onRejected = { error -> onReject.invoke(error) }
+    fun <S> then(onResolve: Function<T, S>, onReject: Function<Throwable, S>): Later<S> = then(
+        onResolved = { value -> onResolve.apply(value) },
+        onRejected = { error -> onReject.apply(error) }
     )
 
     /**
      * Same as calling catch on javascript / kotlin
      */
-    fun <S> error(handler: Callback<Throwable, S>): Later<S> = then(
+    fun <S> error(handler: Function<Throwable, S>): Later<S> = then(
         onResolved = null,
-        onRejected = { err -> handler.invoke(err) }
+        onRejected = { err -> handler.apply(err) }
     )
 
     /**
      * Same as calling finally on javascript / kotlin
      */
-    fun complete(handler: Callback<State.Settled, Any?>) = complete { state -> handler.invoke(state) }
+    fun complete(handler: Function<LaterState.Settled, Any?>) = complete { state -> handler.apply(state) }
 
     /**
      * Warning: This method blocks the [LATER_DISPATCHER_JVM] and just waits for the result

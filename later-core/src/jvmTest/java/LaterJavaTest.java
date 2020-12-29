@@ -16,8 +16,8 @@ public class LaterJavaTest {
             System.out.println("Sleeping");
             sleep(2000);
             System.out.println("finished sleeping");
-            if (value < 5) reject.invoke(new Exception("Number (" + value + ") is less than 5"));
-            resolve.invoke(value);
+            if (value < 5) reject.apply(new Exception("Number (" + value + ") is less than 5"));
+            resolve.apply(value);
         });
     }
 
@@ -34,12 +34,7 @@ public class LaterJavaTest {
         }).complete(res -> {
             System.out.println("Finished with " + res);
             return null;
-        });
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        }).wait();
     }
 
     @Test
@@ -59,7 +54,7 @@ public class LaterJavaTest {
         }).complete(res -> {
             System.out.println("Finished with " + res);
             return null;
-        });
+        }).wait();
     }
 
     @Test
@@ -79,6 +74,6 @@ public class LaterJavaTest {
         }).complete(res -> {
             System.out.println("Finished with " + res);
             return null;
-        });
+        }).wait();
     }
 }
