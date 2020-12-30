@@ -1,14 +1,18 @@
 package tz.co.asoft
 
+import tz.co.asoft.LaterState.PENDING
+import tz.co.asoft.LaterState.Settled
+import tz.co.asoft.LaterState.Settled.FULFILLED
+import tz.co.asoft.LaterState.Settled.REJECTED
 import kotlin.js.JsName
 import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
 open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
-    private var thenQueue: MutableList<LaterQueueComponent> = mutableListOf()
-    private var finallyQueue: MutableList<LaterQueueComponent> = mutableListOf()
+    private var thenQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
+    private var finallyQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
 
-    private var innerState: LaterState = PENDING
+    private var innerState: LaterState<T> = PENDING()
 
     val state get() = innerState
 
@@ -34,7 +38,7 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     @JvmSynthetic
     fun <S> then(onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)?): Later<S> {
         val controlledLater = Later<S>()
-        thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> Any?, onRejected))
+        thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> S, onRejected))
         when (val s = innerState) {
             is FULFILLED -> propagateFulfilled(s.value)
             is REJECTED -> propagateRejected(s.cause)
@@ -49,43 +53,49 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     @JsName("catch")
     fun <S> catch(handler: (Throwable) -> S) = error(handler)
 
-    protected fun cleanUp(cleanUp: (state: Settled) -> Any?): Later<T> {
+    protected fun cleanUp(cleanUp: (state: Settled<T>) -> Any?): Later<T> {
         val s = innerState
         if (s is Settled) {
             cleanUp(s)
             return when (s) {
-                is FULFILLED -> Later.resolve(s.value as T)
+                is FULFILLED -> Later.resolve(s.value)
                 is REJECTED -> Later.reject(s.cause) as Later<T>
             }
         }
 
         val controlledLater = Later<T>()
-        val resolve = { value: Any? ->
+        val resolve = { value: T ->
             cleanUp(FULFILLED(value))
+            value
         }
         val rejected = { err: Throwable ->
             cleanUp(REJECTED(err))
+            err as T
         }
-        finallyQueue.add(LaterQueueComponent(controlledLater, resolve, rejected))
+        finallyQueue.add(LaterQueueComponent(controlledLater, resolve as? (Any?) -> T, rejected))
         return controlledLater
     }
 
     @JvmSynthetic
-    fun complete(cleanUp: (state: Settled) -> Any?) = cleanUp(cleanUp)
+    fun complete(cleanUp: (state: Settled<T>) -> Any?) = cleanUp(cleanUp)
 
     @JvmSynthetic
     @JsName("finally")
-    fun finally(cleanUp: (state: Settled) -> Any?) = cleanUp(cleanUp)
+    fun finally(cleanUp: (state: Settled<T>) -> Any?) = cleanUp(cleanUp)
 
-    fun <T> resolveWith(value: T) {
+    fun resolveWith(value: T) {
         if (innerState is PENDING) {
-            innerState = FULFILLED(value)
-            propagateFulfilled(value)
+            try {
+                innerState = FULFILLED(value as T)
+                propagateFulfilled(value)
+            } catch (err: Throwable) {
+                rejectWith(err)
+            }
         }
     }
 
     fun rejectWith(error: Throwable) {
-        if (innerState == PENDING) {
+        if (innerState is PENDING) {
             innerState = REJECTED(error)
             propagateRejected(error)
         }
@@ -93,17 +103,16 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
 
     private fun propagateFulfilled(value: Any?) {
         thenQueue.forEach {
-            val controlledLater = it.controlledLater
+            val controlledLater = it.controlledLater as Later<Any?>
             val fulfilledFn = it.fulfilledFn
             try {
                 val valueOrLater = fulfilledFn?.invoke(value) ?: throw RuntimeException("No fulfilled function provided")
-                if (isThenable(valueOrLater)) {
-                    valueOrLater.then(
+                when {
+                    valueOrLater.isThenable() -> valueOrLater.then(
                         onResolved = { v -> controlledLater.resolveWith(v) },
                         onRejected = { error -> controlledLater.rejectWith(error) }
                     )
-                } else {
-                    controlledLater.resolveWith(valueOrLater)
+                    else -> controlledLater.resolveWith(valueOrLater)
                 }
             } catch (err: Throwable) {
                 controlledLater.resolveWith(value)
@@ -111,7 +120,7 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
         }
 
         finallyQueue.forEach {
-            val controlledLater = it.controlledLater
+            val controlledLater = it.controlledLater as Later<Any?>
             val fulfilledFn = it.fulfilledFn
             fulfilledFn?.invoke(value)
             controlledLater.resolveWith(value)
@@ -122,17 +131,16 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
 
     private fun propagateRejected(error: Throwable) {
         thenQueue.forEach {
-            val controlledLater = it.controlledLater
+            val controlledLater = it.controlledLater as Later<Any?>
             try {
                 val rejectedFn = it.rejectedFn ?: throw RuntimeException("No catch function")
                 val valueOrLater = rejectedFn(error)
-                if (isThenable(valueOrLater)) {
-                    valueOrLater.then(
+                when {
+                    valueOrLater.isThenable() -> valueOrLater.then(
                         onResolved = { v -> controlledLater.resolveWith(v) },
                         onRejected = { err -> controlledLater.rejectWith(err) }
                     )
-                } else {
-                    controlledLater.resolveWith(valueOrLater)
+                    else -> controlledLater.resolveWith(valueOrLater)
                 }
             } catch (err: Throwable) {
                 controlledLater.rejectWith(err)

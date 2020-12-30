@@ -1,3 +1,7 @@
+# 0.0.41 : 2020.12.30
+- Added static resolving by adding generics to LaterState
+- Added expect extensions functions to further ease the use of Later while testing
+
 # 0.0.40 : 2020.12.29
 - Rewrote everything
 - Created portable javascript thenables that can universally be used in any language
