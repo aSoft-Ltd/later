@@ -2,6 +2,7 @@ package tz.co.asoft
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
+import tz.co.asoft.LaterState.Settled
 import java.util.concurrent.CompletableFuture
 import java.util.function.Function
 import kotlin.coroutines.resume
@@ -29,7 +30,7 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
     )
 
     /**
-     * Same as calling catch on javascript / kotlin
+     * Same as calling catch on javascript or kotlin
      */
     fun <S> error(handler: Function<Throwable, S>): Later<S> = then(
         onResolved = null,
@@ -37,9 +38,9 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
     )
 
     /**
-     * Same as calling finally on javascript / kotlin
+     * Same as calling finally on javascript or kotlin
      */
-    fun complete(handler: Function<Settled, Any?>) = complete { state -> handler.apply(state) }
+    fun complete(handler: Function<Settled<T>, Any?>) = complete { state -> handler.apply(state) }
 
     /**
      * Warning: This method blocks the [LATER_DISPATCHER_JVM] and just waits for the result

@@ -3,15 +3,43 @@
 package tz.co.asoft
 
 import kotlin.js.JsExport
-
-sealed class LaterState
+import tz.co.asoft.LaterState.Settled.FULFILLED
+import tz.co.asoft.LaterState.Settled.REJECTED
 
 /**
- * Encapsulation of a settled stated
- * this may be either [FULFILLED] or [Settled]
+ * ### State of a [Later]
+ * An encapsulation representing a [Later.state]
+ *
+ * A [Later] always begin on a [PENDING] state.
+ *
+ * When it runs, and finishes off it's work it gets [Settled]
+ * in either a [FULFILLED] or [REJECTED] state
  */
-sealed class Settled : LaterState()
+sealed class LaterState<T> {
 
-object PENDING : LaterState()
-data class FULFILLED(val value: Any?) : Settled()
-data class REJECTED(val cause: Throwable) : Settled()
+    /**
+     * Initial [LaterState]. Every later begins at this state
+     */
+    class PENDING<T> : LaterState<T>() {
+        override fun toString() = "PENDING"
+    }
+
+    /**
+     * Encapsulation of a settled stated.
+     *
+     * This may be either [FULFILLED] or [REJECTED]
+     */
+    sealed class Settled<T> : LaterState<T>() {
+        /**
+         * A state representing a successful completion of a [Later]
+         * @param value The value that this [Later] completed with
+         */
+        data class FULFILLED<T>(val value: T) : Settled<T>()
+
+        /**
+         * A state representing a failed completion of a [Later]
+         * @param cause The [Throwable] that caused the failure
+         */
+        data class REJECTED<T>(val cause: Throwable) : Settled<T>()
+    }
+}

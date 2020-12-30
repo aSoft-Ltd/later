@@ -13,11 +13,12 @@ class ApiTest {
             50
         }
         later.await()
-        expect(later).toBe<Settled>()
-        expect(later).toBe<FULFILLED>()
+        expect(later).toBeSettled()
+        expect(later).toBeFulfilled()
         expect(later) {
-            toBe<Settled>()
-            toBe<FULFILLED>()
+            toBeSettled()
+            toBeFulfilled()
+            toBeFulfilledWith(50)
         }
     }
 }
