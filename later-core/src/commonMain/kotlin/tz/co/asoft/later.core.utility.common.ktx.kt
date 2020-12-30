@@ -6,12 +6,12 @@ import kotlin.contracts.contract
 expect fun loadToNextEventLoop(body: () -> Unit)
 
 @OptIn(ExperimentalContracts::class)
-fun isThenable(o: Any?): Boolean {
+internal fun Any?.isThenable(): Boolean {
     contract {
-        returns(true) implies (o is BaseLater<*>)
+        returns(true) implies (this@isThenable is BaseLater<*>)
     }
-    if (o == null) return false
-    if (o is BaseLater<*>) return true
+    if (this == null) return false
+    if (this is BaseLater<*>) return true
 //    if (js("typeof o.then === 'function'")) return true
     return false
 }
