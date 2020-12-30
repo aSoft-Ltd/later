@@ -20,14 +20,13 @@ kotlin {
                 }
             }
         }
-        binaries.executable()
     }
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(project(":later-ktx"))
                 api(asoft("test-coroutines", vers.asoft.test))
-                api(asoft("expect-core",vers.asoft.expect))
+                api(asoft("expect-core", vers.asoft.expect))
             }
         }
     }
