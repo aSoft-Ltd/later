@@ -1,5 +1,6 @@
 # 0.0.42 : 2021.01.02
 - Improved performance of `Later.await()`
+- Updated to builders 1.3.0
 
 # 0.0.41 : 2020.12.30
 - Added static resolving by adding generics to LaterState
