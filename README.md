@@ -14,7 +14,6 @@ All you have to do is return a Later object and you are good to go.
 ## Samples
 In Kotlin you can do something like this
 ```kotlin
-@JSName("getToken")
 class TokenService(val scope: CoroutineScope) {
     fun getToken(id: String) = scope.later { // this is a suspending labda
         delay(100) // simulating heavy work
@@ -78,12 +77,12 @@ that returns a CompletableFuture backed by the Later
 dependencies {
     implementation("tz.co.asoft:later-core:0.0.40")
     
-    implementation("tz.co.asoft:later-ktx:0.0.40") // if using with kotlin coroutines
+    implementation("tz.co.asoft:later-ktx:0.0.40") // if using with kotlinx coroutines
 }
 ```
 
 ## Extensions
-Later is being made to extend into any Deferred data type. It even has built in integration with Deferred support from coroutines
+Later is being made to extend into any Deferred data type. It even has built in integration with Deferred support from kotlinx coroutines
 
 ## Conclusion
 Now, go and build real multiplatform code, that can be shared across mobile (android only for now), web and server (jvm or node)
