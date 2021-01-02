@@ -1,3 +1,6 @@
+# 0.0.42 : 2021.01.02
+- Improved performance of `Later.await()`
+
 # 0.0.41 : 2020.12.30
 - Added static resolving by adding generics to LaterState
 - Added expect extensions functions to further ease the use of Later while testing

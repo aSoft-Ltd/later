@@ -1,6 +1,9 @@
 package tz.co.asoft
 
 import kotlinx.coroutines.*
+import tz.co.asoft.LaterState.Settled
+import tz.co.asoft.LaterState.Settled.FULFILLED
+import tz.co.asoft.LaterState.Settled.REJECTED
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.resume
@@ -31,12 +34,18 @@ fun <T> BaseLater<T>.asDeferred(): Deferred<T> = LATER_SCOPE.async(start = Corou
 
 /**
  * Suspends this [Later] and resumes with the result, or exception
+ *
+ * If this [Later] is already in a [Settled] state,
+ * it returns the [FULFILLED.value] immediately or throws the [REJECTED.cause]
  */
-suspend fun <T> BaseLater<T>.await() = suspendCancellableCoroutine<T> { cont ->
-    then(
-        onResolved = { value -> cont.resume(value) },
-        onRejected = { err -> cont.resumeWithException(err) }
-    )
+suspend fun <T> BaseLater<T>.await(): T = when (val s = state) {
+    is Settled -> when (s) {
+        is FULFILLED -> s.value
+        is REJECTED -> throw s.cause
+    }
+    is LaterState.PENDING -> suspendCancellableCoroutine { cont ->
+        then({ value -> cont.resume(value) }, { err -> cont.resumeWithException(err) })
+    }
 }
 
 /**
