@@ -7,21 +7,7 @@ plugins {
 }
 
 kotlin {
-    jvm {
-        targetJava("1.8")
-        withJava()
-    }
-    js(IR) {
-        browser()
-        nodejs {
-            testTask {
-                useMocha {
-                    timeout = "10s"
-                }
-            }
-        }
-        binaries.executable()
-    }
+    multiplatformLib()
     sourceSets {
         val commonTest by getting {
             dependencies {

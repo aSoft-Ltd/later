@@ -7,21 +7,7 @@ plugins {
 }
 
 kotlin {
-    jvm {
-        targetJava("1.8")
-        withJava()
-    }
-    js(IR) {
-        browser()
-        nodejs {
-            testTask {
-                useMocha {
-                    timeout = "10s"
-                }
-            }
-        }
-        binaries.executable()
-    }
+    multiplatformLib()
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -33,7 +19,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 api(asoft("test-coroutines", vers.asoft.test))
-                api(asoft("expect-core",vers.asoft.expect))
+                api(asoft("expect-core", vers.asoft.expect))
             }
         }
     }
