@@ -1,4 +1,7 @@
 import kotlinx.coroutines.delay
+import later.asDeferred
+import later.await
+import later.later
 import tz.co.asoft.*
 import kotlin.test.Test
 

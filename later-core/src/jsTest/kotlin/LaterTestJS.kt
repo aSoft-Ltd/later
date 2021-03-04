@@ -1,3 +1,6 @@
+import later.BaseLater
+import later.later
+import later.then
 import tz.co.asoft.*
 import kotlin.js.Promise
 import kotlin.test.Test
@@ -8,7 +11,7 @@ class LaterTestJS {
     fun returns_a_promise_without_error(): dynamic {
         val promise = Promise { resolve: (Int) -> Unit, reject: ((Throwable) -> Unit)? ->
             console.log("Started resolving")
-            setTimeout({ resolve(42) }, 1000)
+            later.setTimeout({ resolve(42) }, 1000)
         }
 
         val firstThen = promise.then {
@@ -26,7 +29,7 @@ class LaterTestJS {
     fun should_have_a_good_api(): dynamic {
         val later = BaseLater<Int> { resolve, reject ->
             console.log("Started executing")
-            setTimeout(
+            later.setTimeout(
                 {
 //                    resolve(42)
                     reject(RuntimeException("Rejecting For Fun"))

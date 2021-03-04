@@ -1,7 +1,7 @@
 import kotlinx.coroutines.delay
 import tz.co.asoft.asyncTest
-import tz.co.asoft.later
-import tz.co.asoft.then
+import later.later
+import later.then
 import kotlin.test.Test
 
 class InstantiationTest {
