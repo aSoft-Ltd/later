@@ -17,7 +17,7 @@ kotlin {
         iosArm64(),
         watchosArm64(),
         watchosArm32(),
-        watchosX64(),
+        watchosX86(),
         tvosArm64(),
         tvosX64()
     )
@@ -41,13 +41,6 @@ kotlin {
         }
 
         val jsMain by getting {}
-
-//        val nativeMain by creating {
-//            dependsOn(commonMain)
-//            dependencies {
-//                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
-//            }
-//        }
 
         (darwinTargets + linuxTargets).forEach {
             val main by it.compilations.getting {}
