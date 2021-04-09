@@ -1,7 +1,7 @@
 import later.BaseLater
 import later.later
 import later.then
-import tz.co.asoft.*
+import test.*
 import kotlin.js.Promise
 import kotlin.test.Test
 

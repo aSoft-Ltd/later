@@ -1,3 +1,9 @@
+# 0.0.51 : 2021.04.09
+- Adding another linux targets as well
+- Updated build script
+- Updated test from 1.1.10 to 1.1.20
+- Updated expect from 0.0.10 to 0.0.21
+
 # 0.0.50 : 2021.02.04
 
 - Updated gradle from 6.7.1 to 6.8.1

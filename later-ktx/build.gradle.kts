@@ -7,7 +7,24 @@ plugins {
 }
 
 kotlin {
-    multiplatformLib()
+    jvm { library() }
+    js(IR) { library() }
+
+    val darwinTargets = listOf(
+        macosX64(),
+        iosArm32(),
+        iosX64(),
+        iosArm64(),
+        watchosArm64(),
+        watchosArm32(),
+        watchosX86(),
+        tvosArm64(),
+        tvosX64()
+    )
+
+    val linuxTargets = listOf(
+        linuxX64()
+    )
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -20,6 +37,15 @@ kotlin {
             dependencies {
                 api(asoft("test-coroutines", vers.asoft.test))
                 api(asoft("expect-core", vers.asoft.expect))
+            }
+        }
+
+        val jsMain by getting {}
+
+        (darwinTargets + linuxTargets).forEach {
+            val main by it.compilations.getting {}
+            main.defaultSourceSet {
+                dependsOn(jsMain)
             }
         }
     }

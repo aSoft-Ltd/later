@@ -7,30 +7,47 @@ plugins {
 }
 
 kotlin {
-    multiplatformLib()
+    jvm { library() }
+    js(IR) { library() }
+
+    val darwinTargets = listOf(
+        macosX64(),
+        iosArm32(),
+        iosX64(),
+        iosArm64(),
+        watchosArm64(),
+        watchosArm32(),
+        watchosX86(),
+        tvosArm64(),
+        tvosX64()
+    )
+
+    val linuxTargets = listOf(
+        linuxX64()
+    )
+
     sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
+            }
+        }
+
         val commonTest by getting {
             dependencies {
                 api(asoft("test-coroutines", vers.asoft.test))
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
+        val nativeMain by creating {
+            dependsOn(commonMain)
+        }
+
+        (darwinTargets + linuxTargets).forEach {
+            val main by it.compilations.getting {}
+            main.defaultSourceSet {
+                dependsOn(nativeMain)
             }
-        }
-
-        val jvmTest by getting {
-            dependsOn(commonTest)
-            dependsOn(jvmMain)
-        }
-
-        val jsMain by getting {}
-
-        val jsTest by getting {
-            dependsOn(commonTest)
-            dependsOn(jsMain)
         }
     }
 }

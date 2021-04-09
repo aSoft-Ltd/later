@@ -12,7 +12,7 @@ env:
 
 jobs:
   deploy-project:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 1.8
@@ -26,6 +26,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+      - name: Cache konan
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.konan/dependencies
+            ~/.konan/kotlin-native-macos*
+          key: ${{ runner.os }}-konan-
+          restore-keys: ${{ runner.os }}-konan-
       - name: Making gradlew executable
         run: chmod +x ./gradlew
         working-directory: .
