@@ -27,7 +27,11 @@ kotlin {
     )
 
     sourceSets {
-        val commonMain by getting {}
+        val commonMain by getting {
+            dependencies {
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
+            }
+        }
 
         val commonTest by getting {
             dependencies {
@@ -35,17 +39,8 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
-            }
-        }
-
         val nativeMain by creating {
             dependsOn(commonMain)
-            dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
-            }
         }
 
         (darwinTargets + linuxTargets).forEach {
