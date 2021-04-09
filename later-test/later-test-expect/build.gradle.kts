@@ -7,20 +7,24 @@ plugins {
 }
 
 kotlin {
-    jvm {
-        targetJava("1.8")
-        withJava()
-    }
-    js(IR) {
-        browser()
-        nodejs {
-            testTask {
-                useMocha {
-                    timeout = "10s"
-                }
-            }
-        }
-    }
+    jvm { library() }
+    js(IR) { library() }
+
+    val darwinTargets = listOf(
+        macosX64(),
+        iosArm32(),
+        iosX64(),
+        iosArm64(),
+        watchosArm64(),
+        watchosArm32(),
+        watchosX64(),
+        tvosArm64(),
+        tvosX64()
+    )
+
+    val linuxTargets = listOf(
+        linuxX64()
+    )
     sourceSets {
         val commonMain by getting {
             dependencies {

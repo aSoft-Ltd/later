@@ -2,7 +2,8 @@ import kotlinx.coroutines.delay
 import later.asDeferred
 import later.await
 import later.later
-import tz.co.asoft.*
+import test.*
+import expect.*
 import kotlin.test.Test
 
 class DeferredTest {
