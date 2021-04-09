@@ -4,7 +4,7 @@ import later.LaterState.PENDING
 import later.LaterState.Settled
 import later.LaterState.Settled.FULFILLED
 import later.LaterState.Settled.REJECTED
-import tz.co.asoft.Expectation
+import expect.Expectation
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

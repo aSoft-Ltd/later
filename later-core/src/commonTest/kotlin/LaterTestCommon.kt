@@ -1,7 +1,7 @@
 import later.BaseLater
 import later.loadToNextEventLoop
 import later.then
-import tz.co.asoft.*
+import test.*
 import kotlin.test.Test
 
 class LaterTestCommon {
@@ -29,12 +29,6 @@ class LaterTestCommon {
 
         later2.process()
     }
-
-//    @Test
-//    fun testing_awaiting() = asyncTest {
-//        val res = later(6).await()
-//        println("Awaited value was $res")
-//    }
 
     @Test
     fun finally_test() = asyncTest {

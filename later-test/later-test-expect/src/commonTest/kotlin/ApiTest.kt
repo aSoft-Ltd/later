@@ -1,6 +1,7 @@
 import kotlinx.coroutines.delay
 import later.*
-import tz.co.asoft.*
+import test.*
+import expect.*
 import kotlin.test.Test
 
 class ApiTest {
