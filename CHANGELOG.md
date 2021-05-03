@@ -1,4 +1,9 @@
+# 0.0.60 : 2021.05.02
+
+- Added kotlin 1.5.0 support
+
 # 0.0.51 : 2021.04.09
+
 - Adding another linux targets as well
 - Updated build script
 - Updated test from 1.1.10 to 1.1.20
