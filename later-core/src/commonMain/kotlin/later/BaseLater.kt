@@ -106,7 +106,8 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
             val controlledLater = it.controlledLater as Later<Any?>
             val fulfilledFn = it.fulfilledFn
             try {
-                val valueOrLater = fulfilledFn?.invoke(value) ?: throw RuntimeException("No fulfilled function provided")
+                val valueOrLater =
+                    fulfilledFn?.invoke(value) ?: throw RuntimeException("No fulfilled function provided")
                 when {
                     valueOrLater.isThenable() -> valueOrLater.then(
                         onResolved = { v -> controlledLater.resolveWith(v) },
