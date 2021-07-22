@@ -12,6 +12,5 @@ internal fun Any?.isThenable(): Boolean {
     }
     if (this == null) return false
     if (this is BaseLater<*>) return true
-//    if (js("typeof o.then === 'function'")) return true
     return false
 }

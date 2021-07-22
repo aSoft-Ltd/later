@@ -4,7 +4,7 @@ import test.*
 import expect.*
 import kotlin.test.Test
 
-class ApiTest {
+class LaterTestApiTest {
 
     @Test
     fun should_convert_to_deferred_and_return_results() = asyncTest {

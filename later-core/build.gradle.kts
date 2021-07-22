@@ -7,7 +7,12 @@ plugins {
 }
 
 kotlin {
-    jvm { library() }
+    jvm {
+        library()
+        tasks.withType<Test> {
+            useJUnitPlatform()
+        }
+    }
     js(IR) { library() }
 
     val darwinTargets = listOf(
@@ -29,6 +34,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api("org.jetbrains.kotlinx:atomicfu:${vers.kotlinx.atomicfu}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
             }
         }

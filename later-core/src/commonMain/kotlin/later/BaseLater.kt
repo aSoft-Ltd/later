@@ -9,8 +9,8 @@ import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
 open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
-    private var thenQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
-    private var finallyQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
+    private val thenQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
+    private val finallyQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
 
     private var innerState: LaterState<T> = PENDING()
 
