@@ -105,12 +105,7 @@ kotlinx coroutines
 
 ## Conclusion
 
-Now, go and build real multiplatform code, that can be shared across mobile (android only for now), web and server (jvm
-or node)
-
-## Coming soon
-
-ios/macos support
+Now, go and build real multiplatform code, that can be shared across mobile, web and server
 
 [badge-maven]: https://img.shields.io/maven-central/v/tz.co.asoft/later-core/0.0.61?style=flat
 
