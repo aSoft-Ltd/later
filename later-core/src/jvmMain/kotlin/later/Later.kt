@@ -41,7 +41,7 @@ actual open class Later<T> actual constructor(executor: ((resolve: (T) -> Unit, 
     /**
      * Same as calling finally on javascript or kotlin
      */
-    fun complete(handler: Function<Settled<T>, Any?>) = complete { state -> handler.apply(state) }
+    fun complete(handler: Fun<Settled<T>>) = complete { state -> handler.invoke(state) }
 
     /**
      * Warning: This method blocks the [LATER_DISPATCHER_JVM] and just waits for the result
