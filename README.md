@@ -92,9 +92,9 @@ that returns a CompletableFuture backed by the Later
 
 ```kotlin
 dependencies {
-    implementation("tz.co.asoft:later-core:0.0.62")
+    implementation("tz.co.asoft:later-core:0.0.63")
 
-    implementation("tz.co.asoft:later-ktx:0.0.62") // if using with kotlinx coroutines
+    implementation("tz.co.asoft:later-ktx:0.0.63") // if using with kotlinx coroutines
 }
 ```
 
@@ -107,7 +107,7 @@ kotlinx coroutines
 
 Now, go and build real multiplatform code, that can be shared across mobile, web and server
 
-[badge-maven]: https://img.shields.io/maven-central/v/tz.co.asoft/later-core/0.0.62?style=flat
+[badge-maven]: https://img.shields.io/maven-central/v/tz.co.asoft/later-core/0.0.63?style=flat
 
 [badge-mpp]: https://img.shields.io/badge/kotlin-multiplatform-blue?style=flat
 
