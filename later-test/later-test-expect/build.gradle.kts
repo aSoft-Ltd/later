@@ -7,7 +7,12 @@ plugins {
 }
 
 kotlin {
-    jvm { library() }
+    jvm {
+        library()
+        tasks.withType<Test> {
+            useJUnitPlatform()
+        }
+    }
     js(IR) { library() }
 
     val darwinTargets = listOf(

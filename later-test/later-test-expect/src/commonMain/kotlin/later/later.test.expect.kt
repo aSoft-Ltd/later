@@ -1,10 +1,10 @@
 package later
 
+import expect.BasicExpectation
 import later.LaterState.PENDING
 import later.LaterState.Settled
 import later.LaterState.Settled.FULFILLED
 import later.LaterState.Settled.REJECTED
-import expect.Expectation
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -15,7 +15,7 @@ private fun <S : LaterState<*>> assertionMessage(expectedState: String?, state: 
     ===============================================
 """.trimIndent()
 
-private inline fun <reified S : LaterState<*>> Expectation<BaseLater<*>>.toBe(): S {
+private inline fun <reified S : LaterState<*>> BasicExpectation<out BaseLater<*>>.stateToBe(): S {
     val state = value.state
     assertTrue(assertionMessage(S::class.simpleName, state)) { state is S }
     return try {
@@ -25,18 +25,22 @@ private inline fun <reified S : LaterState<*>> Expectation<BaseLater<*>>.toBe():
     }
 }
 
-fun Expectation<BaseLater<*>>.toBeSettled() = toBe<Settled<*>>()
-fun Expectation<BaseLater<*>>.toBePending() = toBe<PENDING<*>>()
-fun <T> Expectation<BaseLater<T>>.toBeFulfilled() = toBe<FULFILLED<T>>()
-fun <T> Expectation<BaseLater<T>>.toBeFulfilledWith(value: T): T {
-    val state = toBeFulfilled()
+fun BasicExpectation<out BaseLater<*>>.toBeSettled() = stateToBe<Settled<*>>()
+
+fun BasicExpectation<out BaseLater<*>>.toBePending() = stateToBe<PENDING<*>>()
+
+fun <T> BasicExpectation<out BaseLater<T>>.toBeFulfilled() = stateToBe<FULFILLED<T>>()
+
+fun <T> BasicExpectation<out BaseLater<T>>.toBeFulfilledWith(value: T) {
+    val error = AssertionError("Expected state to be fullfilled but was ${this.value.state::class.simpleName}")
+    val state = this.value.state as? FULFILLED<T> ?: throw error
     assertEquals(value, state.value)
-    return state.value
 }
 
-fun Expectation<BaseLater<*>>.toBeRejected() = toBe<REJECTED<*>>()
+fun BasicExpectation<out BaseLater<*>>.toBeRejected() = stateToBe<REJECTED<*>>()
 
-fun Expectation<BaseLater<*>>.toBeRejectedWith(cause: Throwable) {
-    val state = toBeRejected()
+fun BasicExpectation<out BaseLater<*>>.toBeRejectedWith(cause: Throwable) {
+    val error = AssertionError("Expected state to be rejected but was ${this.value.state::class.simpleName}")
+    val state = this.value.state as? REJECTED ?: throw error
     assertEquals(cause, state.cause)
 }
