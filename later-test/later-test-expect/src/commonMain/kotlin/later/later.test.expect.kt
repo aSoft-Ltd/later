@@ -26,8 +26,11 @@ private inline fun <reified S : LaterState<*>> BasicExpectation<out BaseLater<*>
 }
 
 fun BasicExpectation<out BaseLater<*>>.toBeSettled() = stateToBe<Settled<*>>()
+
 fun BasicExpectation<out BaseLater<*>>.toBePending() = stateToBe<PENDING<*>>()
+
 fun <T> BasicExpectation<out BaseLater<T>>.toBeFulfilled() = stateToBe<FULFILLED<T>>()
+
 fun <T> BasicExpectation<out BaseLater<T>>.toBeFulfilledWith(value: T) {
     val error = AssertionError("Expected state to be fullfilled but was ${this.value.state::class.simpleName}")
     val state = this.value.state as? FULFILLED<T> ?: throw error

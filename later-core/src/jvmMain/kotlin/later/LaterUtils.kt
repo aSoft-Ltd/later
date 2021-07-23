@@ -1,3 +1,5 @@
+@file:JvmName("LaterUtils")
+
 package later
 
 import kotlinx.coroutines.*
