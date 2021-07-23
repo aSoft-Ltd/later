@@ -92,9 +92,9 @@ that returns a CompletableFuture backed by the Later
 
 ```kotlin
 dependencies {
-    implementation("tz.co.asoft:later-core:0.0.60")
+    implementation("tz.co.asoft:later-core:0.0.61")
 
-    implementation("tz.co.asoft:later-ktx:0.0.60") // if using with kotlinx coroutines
+    implementation("tz.co.asoft:later-ktx:0.0.61") // if using with kotlinx coroutines
 }
 ```
 
@@ -112,7 +112,7 @@ or node)
 
 ios/macos support
 
-[badge-maven]: https://img.shields.io/maven-central/v/tz.co.asoft/later-core/0.0.60?style=flat
+[badge-maven]: https://img.shields.io/maven-central/v/tz.co.asoft/later-core/0.0.61?style=flat
 
 [badge-mpp]: https://img.shields.io/badge/kotlin-multiplatform-blue?style=flat
 
