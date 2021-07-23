@@ -1,3 +1,5 @@
+@file:JvmMultifileClass
+
 package later
 
 import kotlinx.coroutines.*

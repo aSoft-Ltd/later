@@ -1,5 +1,7 @@
 package later
 
+import kotlinx.atomicfu.AtomicRef
+import kotlinx.atomicfu.atomic
 import later.LaterState.PENDING
 import later.LaterState.Settled
 import later.LaterState.Settled.FULFILLED
@@ -9,12 +11,12 @@ import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
 open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
-    private var thenQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
-    private var finallyQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
+    private val thenQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
+    private val finallyQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
 
-    private var innerState: LaterState<T> = PENDING()
+    private val innerState: AtomicRef<LaterState<T>> = atomic(PENDING())
 
-    val state get() = innerState
+    val state get() = innerState.value
 
     init {
         loadToNextEventLoop {
@@ -39,7 +41,7 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     fun <S> then(onResolved: ((T) -> S)?, onRejected: ((Throwable) -> S)?): Later<S> {
         val controlledLater = Later<S>()
         thenQueue.add(LaterQueueComponent(controlledLater, onResolved as? (Any?) -> S, onRejected))
-        when (val s = innerState) {
+        when (val s = state) {
             is FULFILLED -> propagateFulfilled(s.value)
             is REJECTED -> propagateRejected(s.cause)
         }
@@ -54,7 +56,7 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     fun <S> catch(handler: (Throwable) -> S) = error(handler)
 
     protected fun cleanUp(cleanUp: (state: Settled<T>) -> Any?): Later<T> {
-        val s = innerState
+        val s = state
         if (s is Settled) {
             cleanUp(s)
             return when (s) {
@@ -84,9 +86,9 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     fun finally(cleanUp: (state: Settled<T>) -> Any?) = cleanUp(cleanUp)
 
     fun resolveWith(value: T) {
-        if (innerState is PENDING) {
+        if (state is PENDING) {
             try {
-                innerState = FULFILLED(value as T)
+                innerState.lazySet(FULFILLED(value as T))
                 propagateFulfilled(value)
             } catch (err: Throwable) {
                 rejectWith(err)
@@ -95,8 +97,8 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
     }
 
     fun rejectWith(error: Throwable) {
-        if (innerState is PENDING) {
-            innerState = REJECTED(error)
+        if (state is PENDING) {
+            innerState.lazySet(REJECTED(error))
             propagateRejected(error)
         }
     }

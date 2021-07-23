@@ -8,7 +8,11 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.jvm.JvmMultifileClass
+import kotlin.native.concurrent.SharedImmutable
+import kotlin.native.concurrent.ThreadLocal
 
+@SharedImmutable
 expect val LATER_SCOPE: CoroutineScope
 
 fun <T> CoroutineScope.later(
@@ -30,7 +34,7 @@ fun <T> CoroutineScope.later(
 /**
  * Converts and instance of this [BaseLater] into a [Deferred]
  */
-fun <T> BaseLater<T>.asDeferred(): Deferred<T> = LATER_SCOPE.async(start = CoroutineStart.UNDISPATCHED) { await() }
+fun <T> BaseLater<T>.asDeferred(): Deferred<T> = LATER_SCOPE.async(start = CoroutineStart.LAZY) { await() }
 
 /**
  * Suspends this [Later] and resumes with the result, or exception

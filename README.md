@@ -1,6 +1,6 @@
 # Later
 
-![badge][badge-maven] ![badge][badge-mpp] ![badge][badge-android] ![badge][badge-js] ![badge][badge-jvm]
+![badge][badge-maven] ![badge][badge-mpp] ![badge][badge-linux] ![badge][badge-macos] ![badge][badge-android] ![badge][badge-ios] ![badge][badge-watchos] ![badge][badge-tvos] ![badge][badge-js] ![badge][badge-jvm]
 
 ## Introduction
 
@@ -92,9 +92,9 @@ that returns a CompletableFuture backed by the Later
 
 ```kotlin
 dependencies {
-    implementation("tz.co.asoft:later-core:0.0.60")
+    implementation("tz.co.asoft:later-core:0.0.61")
 
-    implementation("tz.co.asoft:later-ktx:0.0.60") // if using with kotlinx coroutines
+    implementation("tz.co.asoft:later-ktx:0.0.61") // if using with kotlinx coroutines
 }
 ```
 
@@ -105,19 +105,24 @@ kotlinx coroutines
 
 ## Conclusion
 
-Now, go and build real multiplatform code, that can be shared across mobile (android only for now), web and server (jvm
-or node)
+Now, go and build real multiplatform code, that can be shared across mobile, web and server
 
-## Coming soon
-
-ios/macos support
-
-[badge-maven]: https://img.shields.io/maven-central/v/tz.co.asoft/later-core/0.0.60?style=flat
+[badge-maven]: https://img.shields.io/maven-central/v/tz.co.asoft/later-core/0.0.61?style=flat
 
 [badge-mpp]: https://img.shields.io/badge/kotlin-multiplatform-blue?style=flat
 
+[badge-macos]: http://img.shields.io/badge/platform-macos-silver.svg?style=flat
+
+[badge-linux]: http://img.shields.io/badge/platform-linux-green.svg?style=flat
+
 [badge-android]: http://img.shields.io/badge/platform-android-brightgreen.svg?style=flat
 
-[badge-js]: http://img.shields.io/badge/platform-js-yellow.svg?style=flat
-
 [badge-jvm]: http://img.shields.io/badge/platform-jvm-orange.svg?style=flat
+
+[badge-ios]: http://img.shields.io/badge/platform-ios-silver.svg?style=flat
+
+[badge-tvos]: http://img.shields.io/badge/platform-tvos-silver.svg?style=flat
+
+[badge-watchos]: http://img.shields.io/badge/platform-watchos-silver.svg?style=flat
+
+[badge-js]: http://img.shields.io/badge/platform-js-yellow.svg?style=flat
