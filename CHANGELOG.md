@@ -1,5 +1,6 @@
 # 0.0.61 : 2021.07.23
 
+- Bumped publishing jdk from 8 to 16
 - Upgraded kotlin from 1.5.0 to 1.5.21
 - Upgraded expect from 0.0.30 to 0.0.40
 - Upgraded gradle from 6.8.1 to 7.0.2

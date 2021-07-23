@@ -1,6 +1,6 @@
 # Later
 
-![badge][badge-maven] ![badge][badge-mpp] ![badge][badge-android] ![badge][badge-js] ![badge][badge-jvm]
+![badge][badge-maven] ![badge][badge-mpp] ![badge][badge-linux] ![badge][badge-macos] ![badge][badge-android] ![badge][badge-ios] ![badge][badge-watchos] ![badge][badge-tvos] ![badge][badge-js] ![badge][badge-jvm]
 
 ## Introduction
 
@@ -116,8 +116,18 @@ ios/macos support
 
 [badge-mpp]: https://img.shields.io/badge/kotlin-multiplatform-blue?style=flat
 
+[badge-macos]: http://img.shields.io/badge/platform-macos-silver.svg?style=flat
+
+[badge-linux]: http://img.shields.io/badge/platform-linux-green.svg?style=flat
+
 [badge-android]: http://img.shields.io/badge/platform-android-brightgreen.svg?style=flat
 
-[badge-js]: http://img.shields.io/badge/platform-js-yellow.svg?style=flat
-
 [badge-jvm]: http://img.shields.io/badge/platform-jvm-orange.svg?style=flat
+
+[badge-ios]: http://img.shields.io/badge/platform-ios-silver.svg?style=flat
+
+[badge-tvos]: http://img.shields.io/badge/platform-tvos-silver.svg?style=flat
+
+[badge-watchos]: http://img.shields.io/badge/platform-watchos-silver.svg?style=flat
+
+[badge-js]: http://img.shields.io/badge/platform-js-yellow.svg?style=flat
