@@ -1,3 +1,7 @@
+# 0.0.62 : 2021.07.23
+
+- Fixed the Invalid Mutability Exception that persisted on scope extension
+
 # 0.0.61 : 2021.07.23
 
 - Bumped publishing jdk from 8 to 16
