@@ -1,8 +1,9 @@
-# 0.0.61 :
+# 0.0.61 : 2021.07.23
 
 - Upgraded kotlin from 1.5.0 to 1.5.20
 - Upgraded expect from 0.0.30 to 0.0.40
 - Upgraded gradle from 6.8.1 to 7.0.2
+- Fixed InvalidMutabilityException on native
 
 # 0.0.60 : 2021.05.02
 
