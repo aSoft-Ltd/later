@@ -9,6 +9,7 @@ plugins {
 kotlin {
     jvm {
         library()
+        withJava()
         tasks.withType<Test> {
             useJUnitPlatform()
         }
