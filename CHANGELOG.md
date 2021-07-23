@@ -1,3 +1,7 @@
+# 0.0.63: 2021.07.23
+
+- Improved Java usability
+
 # 0.0.62 : 2021.07.23
 
 - Fixed the Invalid Mutability Exception that persisted on scope extension
