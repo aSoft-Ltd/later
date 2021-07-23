@@ -1,5 +1,5 @@
 object vers {
-    val kotlin = "1.5.20"
+    val kotlin = "1.5.21"
     val nexus_staging = "0.22.0"
 
     object asoft {
