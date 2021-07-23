@@ -2,7 +2,6 @@ package later
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
-import later.LaterState.Settled
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
