@@ -11,8 +11,8 @@ import kotlin.jvm.JvmStatic
 import kotlin.jvm.JvmSynthetic
 
 open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -> Unit)) -> Unit)? = null) {
-    private val thenQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
-    private val finallyQueue: MutableList<LaterQueueComponent<*>> = mutableListOf()
+    private val thenQueue: AtomicRef<List<LaterQueueComponent<*>>> = atomic(emptyList())
+    private val finallyQueue: AtomicRef<List<LaterQueueComponent<*>>> = atomic(emptyList())
 
     private val innerState: AtomicRef<LaterState<T>> = atomic(PENDING())
 
@@ -34,6 +34,23 @@ open class BaseLater<T>(executor: ((resolve: (T) -> Unit, reject: ((Throwable) -
 
         @JvmStatic
         fun reject(error: Throwable) = BaseLater<Nothing> { _, reject -> reject(error) }
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun <T> AtomicRef<List<T>>.add(obj: T) {
+        val list = buildList {
+            addAll(value)
+            add(obj)
+        }
+        lazySet(list)
+    }
+
+    private inline fun <T> AtomicRef<List<T>>.forEach(action: (T) -> Unit) {
+        value.forEach(action)
+    }
+
+    private fun <T> AtomicRef<List<T>>.clear() {
+        lazySet(listOf())
     }
 
     @JsName("then")
