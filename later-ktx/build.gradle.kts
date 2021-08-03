@@ -15,21 +15,7 @@ kotlin {
     }
     js(IR) { library() }
 
-    val darwinTargets = listOf(
-        macosX64(),
-        iosArm32(),
-        iosX64(),
-        iosArm64(),
-        watchosArm64(),
-        watchosArm32(),
-        watchosX86(),
-        tvosArm64(),
-        tvosX64()
-    )
-
-    val linuxTargets = listOf(
-        linuxX64()
-    )
+    val nativeTargets = nativeTargets(true)
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -40,14 +26,13 @@ kotlin {
 
         val commonTest by getting {
             dependencies {
-                api(asoft("test-coroutines", vers.asoft.test))
-                api(asoft("expect-core", vers.asoft.expect))
+                api(asoft("expect-coroutines", vers.asoft.expect))
             }
         }
 
         val jsMain by getting {}
 
-        (darwinTargets + linuxTargets).forEach {
+        nativeTargets.forEach {
             val main by it.compilations.getting {}
             main.defaultSourceSet {
                 dependsOn(jsMain)

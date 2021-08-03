@@ -1,16 +1,15 @@
 object vers {
-    val kotlin = "1.5.21"
+    val kotlin = "1.5.10"
     val nexus_staging = "0.22.0"
 
     object asoft {
-        val test = "1.1.32"
-        val builders = "1.3.30"
-        val later = "0.0.63"
-        val expect = "0.0.40"
+        val builders = "1.3.42"
+        val later = "0.0.64"
+        val expect = "0.0.42"
+        val collections = "0.0.10"
     }
 
     object kotlinx {
-        val coroutines = "1.5.1-native-mt"
-        val atomicfu = "0.16.2"
+        val coroutines = "1.5.0-native-mt"
     }
 }

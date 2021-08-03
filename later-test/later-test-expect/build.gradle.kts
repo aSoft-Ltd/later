@@ -7,35 +7,14 @@ plugins {
 }
 
 kotlin {
-    jvm {
-        library()
-        tasks.withType<Test> {
-            useJUnitPlatform()
-        }
-    }
+    jvm { library() }
     js(IR) { library() }
-
-    val darwinTargets = listOf(
-        macosX64(),
-        iosArm32(),
-        iosX64(),
-        iosArm64(),
-        watchosArm64(),
-        watchosArm32(),
-        watchosX86(),
-        tvosArm64(),
-        tvosX64()
-    )
-
-    val linuxTargets = listOf(
-        linuxX64()
-    )
+    nativeTargets(true)
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(project(":later-ktx"))
-                api(asoft("test-coroutines", vers.asoft.test))
-                api(asoft("expect-core", vers.asoft.expect))
+                api(asoft("expect-coroutines", vers.asoft.expect))
             }
         }
     }
