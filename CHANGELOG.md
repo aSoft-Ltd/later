@@ -1,3 +1,13 @@
+# 0.0.64: 2021.08.04
+
+- Reverted kotlin from 1.5.21 to 1.5.10
+- Upgraded builders from 1.3.30 to 1.3.42
+- Upgrade expect from 0.0.40 to 0.0.42
+- added kotlinx-atomic-collections as a dependency
+- Removed atomic-fu from dependency list
+- Removed asoft.test from dependency list
+- Reverted coroutines from 1.5.1-native-mt to 1.5.0-native-mt
+
 # 0.0.63: 2021.07.23
 
 - Improved Java usability

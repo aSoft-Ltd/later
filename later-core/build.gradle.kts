@@ -10,39 +10,22 @@ kotlin {
     jvm {
         library()
         withJava()
-        tasks.withType<Test> {
-            useJUnitPlatform()
-        }
     }
     js(IR) { library() }
 
-    val darwinTargets = listOf(
-        macosX64(),
-        iosArm32(),
-        iosX64(),
-        iosArm64(),
-        watchosArm64(),
-        watchosArm32(),
-        watchosX86(),
-        tvosArm64(),
-        tvosX64()
-    )
-
-    val linuxTargets = listOf(
-        linuxX64()
-    )
+    val nativeTargets = nativeTargets(true)
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api("org.jetbrains.kotlinx:atomicfu:${vers.kotlinx.atomicfu}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:${vers.kotlinx.coroutines}")
+                api(asoft("kotlinx-atomic-collections", vers.asoft.collections))
+                api(kotlinx("coroutines-core", vers.kotlinx.coroutines))
             }
         }
 
         val commonTest by getting {
             dependencies {
-                api(asoft("test-coroutines", vers.asoft.test))
+                api(asoft("expect-coroutines", vers.asoft.expect))
             }
         }
 
@@ -50,7 +33,7 @@ kotlin {
             dependsOn(commonMain)
         }
 
-        (darwinTargets + linuxTargets).forEach {
+        (nativeTargets).forEach {
             val main by it.compilations.getting {}
             main.defaultSourceSet {
                 dependsOn(nativeMain)
